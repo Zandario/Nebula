@@ -86,7 +86,7 @@
 	if (!ui)
 		ui = new(user, src, ui_key, "shields_monitor.tmpl", "Shield Generators Monitoring", 400, 500, state = state)
 		if(host.update_layout())
-			ui.auto_update_layout = 1
+			ui.set_auto_update_layout(1)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)

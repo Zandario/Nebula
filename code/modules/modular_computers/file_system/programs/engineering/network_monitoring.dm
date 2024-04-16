@@ -77,7 +77,7 @@
 	if (!ui)
 		ui = new(user, src, ui_key, "network_monitor.tmpl", "Network Diagnostics and Monitoring Tool", 575, 700, state = state)
 		if(host.update_layout())
-			ui.auto_update_layout = 1
+			ui.set_auto_update_layout(1)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
