@@ -1,0 +1,53 @@
+body {
+  background-color: #330404;
+  background-image: url('uiBackground-Syndicate.png');
+  background-position: 50% 0;
+  background-repeat: repeat;
+  color: #ff0000;
+}
+
+hr, a, a:link, a:visited, a:active, .linkOn, .linkOff, input {
+  background: #551414;
+}
+
+a:hover, .white, .white:link, .white:visited, .white:active {
+  color: #551414;
+}
+
+.white:hover {
+  background: #551414;
+}
+
+.linkOn, a.linkOn:link, a.linkOn:visited, a.linkOn:active, a.linkOn:hover {
+  background: #771414;
+}
+
+.statusDisplay, .block {
+  border: 1px solid #551414;
+}
+
+.progressFill {
+  background: #551414;
+}
+
+.itemLabelNarrow, .itemLabel, .itemLabelWide, .itemLabelWider, .itemLabelWidest {
+  color: #ff0000;
+}
+
+.link, .linkOn, .linkOff, .selected, .disabled, .yellowButton, .redButton {
+  border: 1px solid #ff0000;
+}
+
+.link, .linkOn, .linkOff, .selected, .disabled, .yellowButton, .redButton {
+  background: #330000;
+}
+
+.average {
+  color: #ff0000;
+}
+
+#uiTitleFluff {
+  background-image: url('uiTitleFluff-Syndicate.png');
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}

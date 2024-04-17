@@ -1,364 +1,345 @@
-body
-{
-	padding: 0;
-	margin: 0;
-	background-color: #272727;
-	font-size: 12px;
-	color: #ffffff;
-	line-height: 170%;
+/* Define the "system" font family */
+@font-face {
+  font-family: system-ui;
+  font-style: normal;
+  font-weight: 300;
+  src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"),
+    local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Light"),
+    local("Roboto-Light"), local("DroidSans"), local("Tahoma");
 }
 
-hr
-{
-	background-color: #3f595e;
-	height: 1px;
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #272727;
+  font-family: "system-ui";
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 170%;
 }
 
-a, a:link, a:visited, a:active, .linkOn, .linkOff, input
-{
-	color: #ffffff;
-	text-decoration: none;
-	background: #3f595e;
-	border: 1px solid #161616;
-	padding: 1px 4px 1px 4px;
-	margin: 0 2px 0 0;
-	cursor:default;
-	white-space:nowrap;
+hr {
+  background-color: #3f595e;
+  height: 1px;
 }
 
-a:hover
-{
-	color: #3f595e;
-	background: #ffffff;
+a,
+a:link,
+a:visited,
+a:active,
+.linkOn,
+.linkOff,
+input {
+  color: #ffffff;
+  text-decoration: none;
+  background: #3f595e;
+  border: 1px solid #161616;
+  padding: 1px 4px 1px 4px;
+  margin: 0 2px 0 0;
+  cursor: default;
+  white-space: nowrap;
 }
 
-a.white, a.white:link, a.white:visited, a.white:active
-{
-	color: #3f595e;
-	text-decoration: none;
-	background: #ffffff;
-	border: 1px solid #161616;
-	padding: 1px 4px 1px 4px;
-	margin: 0 2px 0 0;
-	cursor:default;
+a:hover {
+  color: #3f595e;
+  background: #ffffff;
 }
 
-a.white:hover
-{
-	color: #ffffff;
-	background: #3f595e;
+a.white,
+a.white:link,
+a.white:visited,
+a.white:active {
+  color: #3f595e;
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid #161616;
+  padding: 1px 4px 1px 4px;
+  margin: 0 2px 0 0;
+  cursor: default;
 }
 
-.linkOn, a.linkOn:link, a.linkOn:visited, a.linkOn:active, a.linkOn:hover
-{
-	color: #ffffff;
-	background: #aa5f36;
-	border-color: #202020;
+a.white:hover {
+  color: #ffffff;
+  background: #3f595e;
 }
 
-.linkOff, a.linkOff:link, a.linkOff:visited, a.linkOff:active, a.linkOff:hover
-{
-	color: #ffffff;
-	background: #999999;
-	border-color: #666666;
+.linkOn,
+a.linkOn:link,
+a.linkOn:visited,
+a.linkOn:active,
+a.linkOn:hover {
+  color: #ffffff;
+  background: #aa5f36;
+  border-color: #202020;
 }
 
-a.icon, .linkOn.icon, .linkOff.icon
-{
-	position: relative;
-	padding: 1px 4px 2px 20px;
+.linkOff,
+a.linkOff:link,
+a.linkOff:visited,
+a.linkOff:active,
+a.linkOff:hover {
+  color: #ffffff;
+  background: #999999;
+  border-color: #666666;
 }
 
-a.icon img, .linkOn.icon img
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 18px;
-	height: 18px;
+a.icon,
+.linkOn.icon,
+.linkOff.icon {
+  position: relative;
+  padding: 1px 4px 2px 20px;
 }
 
-table, th, td
-{
-	border-collapse: collapse;
-	padding: 1px;
+a.icon img,
+.linkOn.icon img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
 }
 
-th
-{
-	background-color: #48656c;
+table,
+th,
+td {
+  border-collapse: collapse;
+  padding: 1px;
 }
 
-ul
-{
-	padding: 4px 0 0 10px;
-	margin: 0;
-	list-style-type: none;
+th {
+  background-color: #48656c;
 }
 
-li
-{
-	padding: 0 0 2px 0;
+ul {
+  padding: 4px 0 0 10px;
+  margin: 0;
+  list-style-type: none;
 }
 
-img, a img
-{
-	border-style:none;
+li {
+  padding: 0 0 2px 0;
 }
 
-h1, h2, h3, h4, h5, h6
-{
-	margin: 0;
-	padding: 16px 0 8px 0;
-	color: #517087;
+img,
+a img {
+  border-style: none;
 }
 
-h1
-{
-	font-size: 15px;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 16px 0 8px 0;
+  color: #517087;
 }
 
-h2
-{
-	font-size: 14px;
+h1 {
+  font-size: 15px;
 }
 
-h3
-{
-	font-size: 13px;
+h2 {
+  font-size: 14px;
 }
 
-h4
-{
-	font-size: 12px;
+h3 {
+  font-size: 13px;
 }
 
-.uiWrapper
-{
-	width: 100%;
-	height: 100%;
+h4 {
+  font-size: 12px;
 }
 
-.uiTitle
-{
-	clear: both;
-	padding: 6px 8px 6px 8px;
-	border-bottom: 2px solid #161616;
-	background: #383838;
-	color: #98B0C3;
-	font-size: 16px;
+.uiWrapper {
+  width: 100%;
+  height: 100%;
 }
 
-.uiTitleWrapper
- {
- 	z-index: 10;
- }
-
- .uiTitleButtons
- {
- 	z-index:11;
- }
-
-
-.uiTitle.icon
-{
-	padding: 6px 8px 6px 42px;
-	background-position: 2px 50%;
-	background-repeat: no-repeat;
+.uiTitle {
+  clear: both;
+  padding: 6px 8px 6px 8px;
+  border-bottom: 2px solid #161616;
+  background: #383838;
+  color: #98b0c3;
+  font-size: 16px;
 }
 
-.uiContent
-{
-	clear: both;
-	padding: 8px;
-	font-family: Verdana, Geneva, sans-serif;
+.uiTitleWrapper {
+  z-index: 10;
 }
 
-.good
-{
-	color: #00ff00;
+.uiTitleButtons {
+  z-index: 11;
 }
 
-.mild
-{
-	color: #e0d000;
+.uiTitle.icon {
+  padding: 6px 8px 6px 42px;
+  background-position: 2px 50%;
+  background-repeat: no-repeat;
 }
 
-.average
-{
-	color: #f09000;
+.uiContent {
+  clear: both;
+  padding: 8px;
 }
 
-.bad
-{
-	color: #ff0000;
+.good {
+  color: #00ff00;
 }
 
-.highlight
-{
-	color: #8BA5C4;
+.mild {
+  color: #e0d000;
 }
 
-.dark
-{
-	color: #272727;
+.average {
+  color: #f09000;
 }
 
-.notice
-{
-	position: relative;
-	background: #E9C183;
-	color: #15345A;
-	font-size: 10px;
-	font-style: italic;
-	padding: 2px 4px 0 4px;
-	margin: 4px;
+.bad {
+  color: #ff0000;
 }
 
-.notice.icon
-{
-	padding: 2px 4px 0 20px;
+.highlight {
+  color: #8ba5c4;
 }
 
-.notice img
-{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 16px;
-	height: 16px;
+.dark {
+  color: #272727;
 }
 
-div.notice
-{
-	clear: both;
+.notice {
+  position: relative;
+  background: #e9c183;
+  color: #15345a;
+  font-size: 10px;
+  font-style: italic;
+  padding: 2px 4px 0 4px;
+  margin: 4px;
 }
 
-.statusDisplay
-{
-	background: #000000;
-	color: #ffffff;
-	border: 1px solid #3f595e;
-	padding: 4px;
-	margin: 3px 0;
+.notice.icon {
+  padding: 2px 4px 0 20px;
 }
 
-.block
-{
-	padding: 8px;
-	margin: 10px 4px 4px 4px;
-	border: 1px solid #3f595e;
-	background-color: #202020;
+.notice img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
 }
 
-.block h3
-{
-	padding: 0;
+div.notice {
+  clear: both;
 }
 
-.progressBar
-{
-	width: 240px;
-	height: 14px;
-	border: 1px solid #666666;
-	float: left;
-	margin: 0 5px;
-	overflow: hidden;
+.statusDisplay {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #3f595e;
+  padding: 4px;
+  margin: 3px 0;
 }
 
-.progressFill
-{
-	width: 100%;
-	height: 100%;
-	background: #3f595e;
-	overflow: hidden;
+.block {
+  padding: 8px;
+  margin: 10px 4px 4px 4px;
+  border: 1px solid #3f595e;
+  background-color: #202020;
 }
 
-.progressFill.good
-{
-	color: #ffffff;
-	background: #00ff00;
+.block h3 {
+  padding: 0;
 }
 
-.progressFill.mild
-{
-	color: #ffffff;
-	background: #e0d000;
+.progressBar {
+  width: 240px;
+  height: 14px;
+  border: 1px solid #666666;
+  float: left;
+  margin: 0 5px;
+  overflow: hidden;
 }
 
-.progressFill.average
-{
-	color: #ffffff;
-	background: #f09000;
+.progressFill {
+  width: 100%;
+  height: 100%;
+  background: #3f595e;
+  overflow: hidden;
 }
 
-.progressFill.bad
-{
-	color: #ffffff;
-	background: #ff0000;
+.progressFill.good {
+  color: #ffffff;
+  background: #00ff00;
 }
 
-.progressFill.highlight
-{
-	color: #ffffff;
-	background: #8BA5C4;
+.progressFill.mild {
+  color: #ffffff;
+  background: #e0d000;
 }
 
-.clearBoth
-{
-	clear: both;
+.progressFill.average {
+  color: #ffffff;
+  background: #f09000;
 }
 
-.clearLeft
-{
-	clear: left;
+.progressFill.bad {
+  color: #ffffff;
+  background: #ff0000;
 }
 
-.clearRight
-{
-	clear: right;
+.progressFill.highlight {
+  color: #ffffff;
+  background: #8ba5c4;
 }
 
-.line
-{
-	width: 100%;
-	clear: both;
+.clearBoth {
+  clear: both;
 }
 
-.statusDisplay
-{
-	background: #000000;
-	color: #ffffff;
-	border: 1px solid #3f595e;
-	padding: 4px;
-	margin: 3px 0;
+.clearLeft {
+  clear: left;
 }
 
-.codexLore
-{
-	color: #abdb9b;
+.clearRight {
+  clear: right;
+}
+
+.line {
+  width: 100%;
+  clear: both;
+}
+
+.statusDisplay {
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #3f595e;
+  padding: 4px;
+  margin: 3px 0;
+}
+
+.codexLore {
+  color: #abdb9b;
 }
 
 .codexMechanics {
-	color: #9ebcd8;
+  color: #9ebcd8;
 }
 
-.codexAntag
-{
-	color: #e5a2a2;
+.codexAntag {
+  color: #e5a2a2;
 }
 
-.dmCodexBody
-{
-	margin-left: 15px;
+.dmCodexBody {
+  margin-left: 15px;
 }
 
-.dmCodexBody td
-{
-	vertical-align: top;
+.dmCodexBody td {
+  vertical-align: top;
 }
 
-.dmCodexHeader
-{
-	text-align: center;
+.dmCodexHeader {
+  text-align: center;
 }
