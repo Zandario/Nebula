@@ -1,9 +1,5 @@
 {
   "typeAcquisition": {
-    "include": [
-      "dot",
-      "jquery",
-      "jquery.timers"
-    ]
+    "include": ["dot", "jquery", "jquery.timers"]
   }
 }
