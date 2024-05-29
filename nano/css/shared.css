@@ -515,17 +515,6 @@
     float: left;
   }
 
-  .block {
-    padding: 8px;
-    margin: 10px 4px 4px 4px;
-    border: 1px solid var(--color-main);
-    background-color: #202020;
-  }
-
-  .block h3 {
-    padding: 0;
-  }
-
   .displayBar {
     position: relative;
     width: 236px;
@@ -968,12 +957,27 @@
     padding: 3px 6px;
     border-width: 2px;
     border-style: groove;
-    border-color: hsl(0, 0%, 46%);
+    border-color: var(--color-main);
+    /* border-color: hsl(0, 0%, 46%); */
     background-color: hsl(0, 0%, 13%);
   }
 
   fieldset {
-    border-color: hsl(0, 0%, 46%);
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--color-main);
+    /* border-color: hsl(0, 0%, 46%); */
     background-color: hsl(0, 0%, 13%);
+  }
+
+  .block {
+    padding: 8px;
+    margin: 10px 4px 4px 4px;
+    border: 1px solid var(--color-main);
+    background-color: #202020;
+  }
+
+  .block h3 {
+    padding: 0;
   }
 }
