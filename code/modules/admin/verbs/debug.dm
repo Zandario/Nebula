@@ -544,3 +544,16 @@
 	. += "</ol>"
 
 	show_browser(usr, JOINTEXT(.), "window=dellog")
+
+
+/client/proc/devtools()
+	set category = "Debug"
+	set name = "Dev Tools"
+	set desc = "Enabled webview2 dev tools"
+
+	#if DM_VERSION >= 516
+	winset(src, null, "browser-options=find,devtools")
+	message_admins("[key_name_admin(usr)] has enabled Dev Tools.")
+	#else
+	to_chat(usr, "Dev Tools isn't supported in this version.")
+	#endif

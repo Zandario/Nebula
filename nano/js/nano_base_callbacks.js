@@ -1,13 +1,31 @@
-// NanoBaseCallbacks is where the base callbacks (common to all templates) are stored
+/**
+ * NanoBaseCallbacks is a self-invoking function that manages callbacks for updates.
+ */
 NanoBaseCallbacks = (function () {
-  // _canClick is used to disable clicks for a short period after each click (to avoid mis-clicks)
+  /**
+   * Used to disable clicks for a short period after each click (to avoid mis-clicks)
+   * @type {boolean}
+   */
   let _canClick = true;
 
+  /**
+   * An object that stores callbacks to be executed before an update.
+   * @type {Object}
+   */
   let _baseBeforeUpdateCallbacks = {};
 
+  /**
+   * An object that stores callbacks to be executed after an update.
+   * @type {Object}
+   */
   let _baseAfterUpdateCallbacks = {
-    // this callback is triggered after new data is processed
-    // it updates the status/visibility icon and adds click event handling to buttons/links
+    /**
+     * This callback is triggered after new data is processed.
+     * It updates the status/visibility icon and adds click event handling to buttons/links.
+     * @param {Object} updateData - The data received from the update.
+     *
+     * @returns {Object} The same updateData object that was passed in.
+     */
     status: function (updateData) {
       let uiStatusClass;
       if (updateData['config']['status'] == 2) {
@@ -46,6 +64,13 @@ NanoBaseCallbacks = (function () {
 
       return updateData;
     },
+    /**
+     * This callback is triggered after new data is processed.
+     * It updates map icons and adds event handling to the zoom link.
+     * @param {Object} updateData - The data received from the update.
+     *
+     * @returns {Object} The same updateData object that was passed in.
+     */
     nanomap: function (updateData) {
       $('.mapIcon')
         .off('mouseenter mouseleave')
@@ -77,23 +102,23 @@ NanoBaseCallbacks = (function () {
           });
         });
 
-      $('#uiMapImage').attr(
-        'src',
-        updateData['config']['mapName'] +
-          '-' +
-          updateData['config']['mapZLevel'] +
-          '.png'
-      );
+      $('#uiMapImage').attr('src', updateData['config']['mapName'] + '-' + updateData['config']['mapZLevel'] + '.png');
 
       return updateData;
     },
   };
 
   return {
+    /**
+     * Adds the callbacks stored in _baseBeforeUpdateCallbacks and _baseAfterUpdateCallbacks to the NanoStateManager.
+     */
     addCallbacks: function () {
       NanoStateManager.addBeforeUpdateCallbacks(_baseBeforeUpdateCallbacks);
       NanoStateManager.addAfterUpdateCallbacks(_baseAfterUpdateCallbacks);
     },
+    /**
+     * Removes the callbacks stored in _baseBeforeUpdateCallbacks and _baseAfterUpdateCallbacks from the NanoStateManager.
+     */
     removeCallbacks: function () {
       for (let callbackKey in _baseBeforeUpdateCallbacks) {
         if (_baseBeforeUpdateCallbacks.hasOwnProperty(callbackKey)) {

@@ -1,7 +1,12 @@
-// NanoBaseHelpers is where the base template helpers (common to all templates) are stored
+/**
+ * NanoBaseHelpers is where the base template helpers (common to all templates) are stored.
+ * @namespace NanoBaseHelpers
+ */
 NanoBaseHelpers = (function () {
   let _baseHelpers = {
-    // change ui styling to "syndicate mode"
+    /**
+     * Changes UI styling to "syndicate mode".
+     */
     syndicateMode: function () {
       $('body').css('background-color', '#330404');
       $('body').css('background-image', "url('uiBackground-Syndicate.png')");
@@ -57,24 +62,28 @@ NanoBaseHelpers = (function () {
 
       $('.average').css('color', '#ff0000');
 
-      $('#uiTitleFluff').css(
-        'background-image',
-        "url('uiTitleFluff-Syndicate.png')"
-      );
+      $('#uiTitleFluff').css('background-image', "url('uiTitleFluff-Syndicate.png')");
       $('#uiTitleFluff').css('background-position', '50% 50%');
       $('#uiTitleFluff').css('background-repeat', 'no-repeat');
 
       return '';
     },
-    // Generate a Byond link
+    /**
+     * Generates a Byond link.
+     * @param {string} text - The text of the link.
+     * @param {string} icon - The icon of the link.
+     * @param {object} parameters - The parameters of the link.
+     * @param {string} status - The status of the link.
+     * @param {string} elementClass - The class of the link element.
+     * @param {string} elementId - The id of the link element.
+     *
+     * @returns {string} The generated link.
+     */
     link: function (text, icon, parameters, status, elementClass, elementId) {
       let iconHtml = '';
       let iconClass = 'noIcon';
       if (typeof icon != 'undefined' && icon) {
-        iconHtml =
-          '<div class="uiLinkPendingIcon"></div><div class="uiIcon16 icon-' +
-          icon +
-          '"></div>';
+        iconHtml = '<div class="uiLinkPendingIcon"></div><div class="uiIcon16 icon-' + icon + '"></div>';
         iconClass = text ? 'hasIcon' : 'onlyIcon';
       }
 
@@ -119,23 +128,50 @@ NanoBaseHelpers = (function () {
         '</div>'
       );
     },
-    // Round a number to the nearest integer
+    /**
+     * Rounds a number to the nearest integer.
+     * @param {number} number - The number to round.
+     *
+     * @returns {number} The rounded number.
+     */
     round: function (number) {
       return Math.round(number);
     },
-    // Returns the number fixed to 1 decimal
+    /**
+     * Returns the number fixed to 1 decimal.
+     * @param {number} number - The number to fix.
+     *
+     * @returns {number} The fixed number.
+     */
     fixed: function (number) {
       return Math.round(number * 10) / 10;
     },
-    // Round a number down to integer
+    /**
+     * Rounds a number down to integer.
+     * @param {number} number - The number to floor.
+     *
+     * @returns {number} The floored number.
+     */
     floor: function (number) {
       return Math.floor(number);
     },
-    // Round a number up to integer
+    /**
+     * Rounds a number up to integer.
+     * @param {number} number - The number to round up.
+     *
+     * @returns {number} The rounded up number.
+     */
     ceil: function (number) {
       return Math.ceil(number);
     },
     // Format a string (~string("Hello {0}, how are {1}?", 'Martin', 'you') becomes "Hello Martin, how are you?")
+    /**
+     * Formats a string.
+     * @example (~string("Hello {0}, how are {1}?", 'Martin', 'you') becomes "Hello Martin, how are you?")
+     * @param {number} number - The number to round up.
+     *
+     * @returns {number} The rounded up number.
+     */
     string: function () {
       if (arguments.length == 0) {
         return '';
@@ -160,17 +196,21 @@ NanoBaseHelpers = (function () {
     capitalizeFirstLetter: function (string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
-    // Display a bar. Used to show health, capacity, etc. Use difClass if the entire display bar class should be different
-    displayBar: function (
-      value,
-      rangeMin,
-      rangeMax,
-      styleClass,
-      showText,
-      difClass,
-      direction,
-      id
-    ) {
+    /**
+     * Displays a bar. Used to show health, capacity, etc.
+     * Use difClass if the entire display bar class should be different
+     * @param {number} value - The current value.
+     * @param {number} rangeMin - The minimum value.
+     * @param {number} rangeMax - The maximum value.
+     * @param {string} styleClass - The class of the bar.
+     * @param {string} showText - The text to show on the bar.
+     * @param {string} difClass - The class of the entire display bar.
+     * @param {string} direction - The direction of the bar.
+     * @param {string} id - The id of the bar.
+     *
+     * @returns {string} The generated bar.
+     */
+    displayBar: function (value, rangeMin, rangeMax, styleClass, showText, difClass, direction, id) {
       if (rangeMin < rangeMax) {
         if (value < rangeMin) {
           value = rangeMin;
@@ -203,9 +243,7 @@ NanoBaseHelpers = (function () {
         direction = 'height';
       }
 
-      let percentage = Math.round(
-        ((value - rangeMin) / (rangeMax - rangeMin)) * 100
-      );
+      let percentage = Math.round(((value - rangeMin) / (rangeMax - rangeMin)) * 100);
 
       return (
         '<div id="displayBar' +
@@ -235,29 +273,29 @@ NanoBaseHelpers = (function () {
         '</div></div>'
       );
     },
-    // Display DNA Blocks (for the DNA Modifier UI)
-    displayDNABlocks: function (
-      dnaString,
-      selectedBlock,
-      selectedSubblock,
-      blockSize,
-      paramKey
-    ) {
+    /**
+     * This function generates HTML for displaying DNA blocks.
+     *
+     * @param {string} dnaString - The DNA sequence to be displayed.
+     * @param {number} selectedBlock - The currently selected block.
+     * @param {number} selectedSubblock - The currently selected subblock within the selected block.
+     * @param {number} blockSize - The size of each block.
+     * @param {string} paramKey - The key used to determine the parameters for the block and subblock.
+     *
+     * @returns {string} The generated HTML for displaying the DNA blocks.
+     */
+    displayDNABlocks: function (dnaString, selectedBlock, selectedSubblock, blockSize, paramKey) {
       if (!dnaString) {
         return '<div class="notice">Please place a valid subject into the DNA modifier.</div>';
       }
 
       let characters = dnaString.split('');
 
-      let html =
-        '<div class="dnaBlock"><div class="link dnaBlockNumber">1</div>';
+      let html = '<div class="dnaBlock"><div class="link dnaBlockNumber">1</div>';
       let block = 1;
       let subblock = 1;
       for (index in characters) {
-        if (
-          !characters.hasOwnProperty(index) ||
-          typeof characters[index] === 'object'
-        ) {
+        if (!characters.hasOwnProperty(index) || typeof characters[index] === 'object') {
           continue;
         }
 
@@ -288,10 +326,7 @@ NanoBaseHelpers = (function () {
         if (index % blockSize == 0 && index < characters.length) {
           block++;
           subblock = 1;
-          html +=
-            '</div><div class="dnaBlock"><div class="link dnaBlockNumber">' +
-            block +
-            '</div>';
+          html += '</div><div class="dnaBlock"><div class="link dnaBlockNumber">' + block + '</div>';
         } else {
           subblock++;
         }
@@ -301,6 +336,11 @@ NanoBaseHelpers = (function () {
 
       return html;
     },
+    /**
+     * Returns the current time of day in deciseconds since midnight.
+     *
+     * @returns {number} The current time of day.
+     */
     byondTimeOfDay: function _byondTimeOfDay() {
       if (typeof _byondTimeOfDay.midnight == 'undefined') {
         _byondTimeOfDay.midnight = new Date().setUTCHours(0, 0, 0, 0);
@@ -310,9 +350,15 @@ NanoBaseHelpers = (function () {
   };
 
   return {
+    /**
+     * Adds the base helpers to the NanoTemplate.
+     */
     addHelpers: function () {
       NanoTemplate.addHelpers(_baseHelpers);
     },
+    /**
+     * Removes the base helpers from the NanoTemplate.
+     */
     removeHelpers: function () {
       for (let helperKey in _baseHelpers) {
         if (_baseHelpers.hasOwnProperty(helperKey)) {

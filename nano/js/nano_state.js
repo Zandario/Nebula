@@ -1,26 +1,56 @@
-// This is the base state class, it is not to be used directly
-
+/**
+ * NanoStateClass is the base state class, it is not to be used directly.
+ * @constructor
+ */
 function NanoStateClass() {
-  /*if (typeof this.key != 'string' || !this.key.length)
-  {
-      alert('ERROR: Tried to create a state with an invalid state key: ' + this.key);
-      return;
-  }
+  /*
+	if (typeof this.key != 'string' || !this.key.length) {
+		alert('ERROR: Tried to create a state with an invalid state key: ' + this.key);
+		return;
+	}
 
-  this.key = this.key.toLowerCase();
+	this.key = this.key.toLowerCase();
 
-  NanoStateManager.addState(this);*/
+	NanoStateManager.addState(this);
+	*/
 }
 
+/**
+ * The key of the state.
+ * @type {string}
+ */
 NanoStateClass.prototype.key = null;
+
+/**
+ * Indicates if the layout has been rendered.
+ * @type {boolean}
+ */
 NanoStateClass.prototype.layoutRendered = false;
+
+/**
+ * Indicates if the content has been rendered.
+ * @type {boolean}
+ */
 NanoStateClass.prototype.contentRendered = false;
+
+/**
+ * Indicates if the map has been initialised.
+ * @type {boolean}
+ */
 NanoStateClass.prototype.mapInitialised = false;
 
+/**
+ * Checks if the current state is this state.
+ * @returns {boolean} True if the current state is this state, false otherwise.
+ */
 NanoStateClass.prototype.isCurrent = function () {
   return NanoStateManager.getCurrentState() == this;
 };
 
+/**
+ * Adds the state and sets up the base callbacks and helpers.
+ * @param {NanoStateClass} previousState - The previous state.
+ */
 NanoStateClass.prototype.onAdd = function (previousState) {
   // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
@@ -28,6 +58,10 @@ NanoStateClass.prototype.onAdd = function (previousState) {
   NanoBaseHelpers.addHelpers();
 };
 
+/**
+ * Removes the state and removes the base callbacks and helpers.
+ * @param {NanoStateClass} nextState - The next state.
+ */
 NanoStateClass.prototype.onRemove = function (nextState) {
   // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
@@ -35,6 +69,11 @@ NanoStateClass.prototype.onRemove = function (nextState) {
   NanoBaseHelpers.removeHelpers();
 };
 
+/**
+ * Executes before the state is updated.
+ * @param {Object} data - The data to be used in the update.
+ * @returns {Object|boolean} The data to continue, false to prevent onUpdate and onAfterUpdate.
+ */
 NanoStateClass.prototype.onBeforeUpdate = function (data) {
   // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
@@ -43,22 +82,24 @@ NanoStateClass.prototype.onBeforeUpdate = function (data) {
   return data; // Return data to continue, return false to prevent onUpdate and onAfterUpdate
 };
 
+/**
+ * Updates the state.
+ * @param {Object} data - The data to be used in the update.
+ */
 NanoStateClass.prototype.onUpdate = function (data) {
   // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
   try {
     if (
       !this.layoutRendered ||
-      (data['config'].hasOwnProperty('autoUpdateLayout') &&
-        data['config']['autoUpdateLayout'])
+      (data['config'].hasOwnProperty('autoUpdateLayout') && data['config']['autoUpdateLayout'])
     ) {
       $('#uiLayout').html(NanoTemplate.parse('layout', data)); // render the 'mail' template to the #mainTemplate div
       this.layoutRendered = true;
     }
     if (
       !this.contentRendered ||
-      (data['config'].hasOwnProperty('autoUpdateContent') &&
-        data['config']['autoUpdateContent'])
+      (data['config'].hasOwnProperty('autoUpdateContent') && data['config']['autoUpdateContent'])
     ) {
       $('#uiContent').html(NanoTemplate.parse('main', data)); // render the 'mail' template to the #mainTemplate div
 
@@ -84,10 +125,7 @@ NanoStateClass.prototype.onUpdate = function (data) {
 
       $('#uiMapContent').html(NanoTemplate.parse('mapContent', data)); // render the 'mapContent' template to the #uiMapContent div
 
-      if (
-        data['config'].hasOwnProperty('showMap') &&
-        data['config']['showMap']
-      ) {
+      if (data['config'].hasOwnProperty('showMap') && data['config']['showMap']) {
         $('#uiContent').addClass('hidden');
         $('#uiMapWrapper').removeClass('hidden');
       } else {
@@ -107,12 +145,20 @@ NanoStateClass.prototype.onUpdate = function (data) {
   }
 };
 
+/**
+ * Executes after the state is updated.
+ * @param {Object} data - The data to be used in the update.
+ */
 NanoStateClass.prototype.onAfterUpdate = function (data) {
   // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
   NanoStateManager.executeAfterUpdateCallbacks(data);
 };
 
+/**
+ * Alerts the provided text.
+ * @param {string} text - The text to be alerted.
+ */
 NanoStateClass.prototype.alertText = function (text) {
   // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
