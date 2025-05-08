@@ -381,10 +381,13 @@ nanoui is used to open and update nano browser uis
 
 	return {"
 <!DOCTYPE html>
-<html>
-	<meta http-equiv="Content-Type" content="text/html; charset=\"utf-8\">
+<html lang="en">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script type='text/json' id='TemplateData'>[template_data_json]</script>
+		<script type='text/json' id='UrlParameters'>[url_parameters_json]</script>
+		<script type='text/json' id='InitialData'>[initial_data_json]</script>
 		<script type='text/javascript'>
 			function receiveUpdateData(jsonString)
 			{
@@ -402,7 +405,7 @@ nanoui is used to open and update nano browser uis
 		</script>
 		[head_content]
 	</head>
-	<body scroll=auto data-template-data='[template_data_json]' data-url-parameters='[url_parameters_json]' data-initial-data='[initial_data_json]'>
+	<body scroll=auto>
 		<div id='uiLayout'>
 		</div>
 		<noscript>
