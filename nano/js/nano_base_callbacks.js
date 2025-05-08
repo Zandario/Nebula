@@ -130,8 +130,5 @@ class NanoBaseCallbacksClass {
 	}
 }
 
-/**
- * The global instance of the NanoBaseCallbacksClass.
- * @type {NanoBaseCallbacksClass}
- */
+/** @type {NanoBaseCallbacksClass} */
 const NanoBaseCallbacks = new NanoBaseCallbacksClass();
