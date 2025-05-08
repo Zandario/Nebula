@@ -74,7 +74,7 @@
 	// update the ui if it exists, returns null if no ui is passed/found
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "space_heater.tmpl", "Space Heater Control Panel")
+		ui = new(user, src, ui_key, "space_heater.jst", "Space Heater Control Panel")
 		ui.set_initial_data(data)
 		ui.open()
 

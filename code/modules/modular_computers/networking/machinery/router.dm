@@ -3,7 +3,7 @@
 	icon = 'icons/obj/machines/tcomms/comm_server.dmi'
 	icon_state = "comm_server"
 	network_device_type =  /datum/extension/network_device/broadcaster/router
-	main_template = "network_router.tmpl"
+	main_template = "network_router.jst"
 	construct_state = /decl/machine_construction/default/panel_closed
 	uncreated_component_parts = null
 	stat_immune = 0

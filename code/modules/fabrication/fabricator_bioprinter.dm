@@ -15,7 +15,7 @@
 	. = istype(thing, /obj/item/organ) || istype(thing, /obj/item/food/butchery) || istype(thing?.material, /decl/material/solid/organic/meat) || ..()
 
 /obj/machinery/fabricator/bioprinter/get_nano_template()
-	return "fabricator_bioprinter.tmpl"
+	return "fabricator_bioprinter.jst"
 
 /obj/machinery/fabricator/bioprinter/make_order(datum/fabricator_recipe/recipe, multiplier)
 	var/datum/fabricator_build_order/order = ..()

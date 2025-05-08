@@ -1,157 +1,236 @@
-(function () {
-    "use strict";
+// doT.js
+// 2011-2014, Laura Doktorova, https://github.com/olado/doT
+// Licensed under the MIT license.
 
-    var doT = {
-            version: '1.0.1-nanoui',
-            templateSettings: {
-            evaluate:          /\{\{([\s\S]+?)\}\}/g,
-            interpolate:       /\{\{:([\s\S]+?)\}\}/g,
-            encode:            /\{\{>([\s\S]+?)\}\}/g,
-            use:               /\{\{#([\s\S]+?)\}\}/g,
-            define:            /\{\{##\s*([\w\.$]+)\s*(\:|=)([\s\S]+?)#\}\}/g,
-            conditional:       /\{\{\/?if\s*([\s\S]*?)\s*\}\}/g,
-            conditionalElse:   /\{\{else\s*([\s\S]*?)\s*\}\}/g,
-            iterate:           /\{\{\/?for\s*(?:\}\}|([\s\S]+?)\s*(?:\:\s*([\w$]+))?\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
-            props:             /\{\{\/?props\s*(?:\}\}|([\s\S]+?)\s*(?:\:\s*([\w$]+))?\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
-            empty:   		   /\{\{empty\}\}/g,
-            varname: 'data, config, helper',
-            strip: true,
-            append: true,
-            selfcontained: false
-        },
-        template: undefined, //fn, compile template
-        compile: undefined  //fn, for express
-    }, global;
+export default {
+  template,
+  compile,
+  setDelimiters,
+}
 
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = doT;
-    } else if (typeof define === 'function' && define.amd) {
-        define(function () {
-            return doT;
-        });
-    } else {
-        global = (function () {
-            return this || (0, eval)('this');
-        }());
-        global.doT = doT;
-    }
+const templateSettings = {
+  argName: "it",
+  encoders: {},
+  selfContained: false,
+  strip: true,
+  internalPrefix: "_val",
+  encodersPrefix: "_enc",
+  delimiters: {
+    start: "{{",
+    end: "}}",
+  },
+}
 
-    function encodeHTMLSource() {
-        var encodeHTMLRules = { "&": "&#38;", "<": "&#60;", ">": "&#62;", '"': '&#34;', "'": '&#39;', "/": '&#47;' },
-            matchHTML = /&(?!#?\w+;)|<|>|"|'|\//g;
-        return function () {
-            return this ? this.replace(matchHTML, function (m) {
-                return encodeHTMLRules[m] || m;
-            }) : this;
-        };
-    }
+// depends on selfContained mode
+const encoderType = {
+  false: "function",
+  true: "string",
+}
 
-    String.prototype.encodeHTML = encodeHTMLSource();
+const defaultSyntax = {
+  evaluate: /\{\{([\s\S]+?(\}?)+)\}\}/g,
+  interpolate: /\{\{=([\s\S]+?)\}\}/g,
+  typeInterpolate: /\{\{%([nsb])=([\s\S]+?)\}\}/g,
+  encode: /\{\{([a-z_$]+[\w$]*)?!([\s\S]+?)\}\}/g,
+  use: /\{\{#([\s\S]+?)\}\}/g,
+  useParams: /(^|[^\w$])def(?:\.|\[[\'\"])([\w$\.]+)(?:[\'\"]\])?\s*\:\s*([\w$]+(?:\.[\w$]+|\[[^\]]+\])*|\"[^\"]+\"|\'[^\']+\'|\{[^\}]+\}|\[[^\]]*\])/g,
+  define: /\{\{##\s*([\w\.$]+)\s*(\:|=)([\s\S]+?)#\}\}/g,
+  defineParams: /^\s*([\w$]+):([\s\S]+)/,
+  conditional: /\{\{\?(\?)?\s*([\s\S]*?)\s*\}\}/g,
+  iterate: /\{\{~\s*(?:\}\}|([\s\S]+?)\s*\:\s*([\w$]+)\s*(?:\:\s*([\w$]+))?\s*\}\})/g,
+}
 
-    var startend = {
-        append: { start: "'+(", end: ")+'", endencode: "||'').toString().encodeHTML()+'" },
-        split: { start: "';out+=(", end: ");out+='", endencode: "||'').toString().encodeHTML();out+='"}
-    }, skip = /$^/;
+let currentSyntax = {...defaultSyntax}
 
-    function resolveDefs(c, block, def) {
-        return ((typeof block === 'string') ? block : block.toString())
-            .replace(c.define || skip, function (m, code, assign, value) {
-                if (code.indexOf('def.') === 0) {
-                    code = code.substring(4);
-                }
-                if (!(code in def)) {
-                    if (assign === ':') {
-                        if (c.defineParams) value.replace(c.defineParams, function (m, param, v) {
-                            def[code] = {arg: param, text: v};
-                        });
-                        if (!(code in def)) def[code] = value;
-                    } else {
-                        new Function("def", "def['" + code + "']=" + value)(def);
-                    }
-                }
-                return '';
-            })
-            .replace(c.use || skip, function (m, code) {
-                if (c.useParams) code = code.replace(c.useParams, function (m, s, d, param) {
-                    if (def[d] && def[d].arg && param) {
-                        var rw = (d + ":" + param).replace(/'|\\/g, '_');
-                        def.__exp = def.__exp || {};
-                        def.__exp[rw] = def[d].text.replace(new RegExp("(^|[^\\w$])" + def[d].arg + "([^\\w$])", "g"), "$1" + param + "$2");
-                        return s + "def.__exp['" + rw + "']";
-                    }
-                });
-                var v = new Function("def", "return " + code)(def);
-                return v ? resolveDefs(c, v, def) : v;
-            });
-    }
+const TYPES = {
+  n: "number",
+  s: "string",
+  b: "boolean",
+}
 
-    function unescape(code) {
-        return code.replace(/\\('|\\)/g, "$1").replace(/[\r\t\n]/g, ' ');
-    }
-
-    doT.template = function (tmpl, c, def) {
-        c = c || doT.templateSettings;
-        var cse = c.append ? startend.append : startend.split, needhtmlencode, sid = 0,
-            str = (c.use || c.define) ? resolveDefs(c, tmpl, def || {}) : tmpl;
-
-        str = ("var out='" + (c.strip ? str.replace(/(^|\r|\n)\t* +| +\t*(\r|\n|$)/g, ' ')
-            .replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g, '') : str)
-            .replace(/'|\\/g, '\\$&')
-            .replace(c.interpolate || skip, function (m, code) {
-                return cse.start + unescape(code) + cse.end;
-            })
-            .replace(c.encode || skip, function (m, code) {
-                needhtmlencode = true;
-                return cse.start + unescape(code) + cse.endencode;
-            })
-            .replace(c.conditional || skip, function (m, code) {
-                return (code ? "';if(" + unescape(code) + "){out+='" : "';}out+='");
-            })
-            .replace(c.conditionalElse || skip, function (m, code) {
-                return (code ? "';}else if(" + unescape(code) + "){out+='" : "';}else{out+='");
-            })
-            .replace(c.iterate || skip, function (m, iterate, vname, iname) {
-                if (!iterate) return "';} } out+='";
-                sid += 1;
-                vname = vname || "value";
-                iname = iname || "index";
-                iterate = unescape(iterate);
-                var arrayName = "arr" + sid;
-                return "';var " + arrayName + "=" + iterate + ";if(" + arrayName + " && " + arrayName + ".length > 0){var " + vname + "," + iname + "=-1,l" + sid + "=" + arrayName + ".length-1;while(" + iname + "<l" + sid + "){"
-                    + vname + "=" + arrayName + "[" + iname + "+=1];out+='";
-            })
-            .replace(c.props || skip, function (m, iterate, vname, iname) {
-                if (!iterate) return "';} } out+='";
-                sid += 1;
-                vname = vname || "value";
-                iname = iname || "key";
-                iterate = unescape(iterate);
-                var objectName = "arr" + sid;
-                return "';var " + objectName + "=" + iterate + ";if(" + objectName + " && Object.size(" + objectName + ") > 0){var " + vname + ";for( var " + iname + " in " + objectName + "){ if (!" + objectName + ".hasOwnProperty(" + iname + ")) continue; " + vname + "=" + objectName + "[" + iname + "];out+='";
-            })
-            .replace(c.empty || skip, function (m) {
-                return "';}}else{if(true){out+='"; // The "if(true)" condition is required to account for the for tag closing with two brackets
-            })
-            .replace(c.evaluate || skip, function (m, code) {
-                return "';" + unescape(code) + "out+='";
-            })
-            + "';return out;")
-            .replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r')
-            .replace(/(\s|;|\}|^|\{)out\+='';/g, '$1').replace(/\+''/g, '')
-            .replace(/(\s|;|\}|^|\{)out\+=''\+/g, '$1out+=');
-
-        if (needhtmlencode && c.selfcontained) {
-            str = "String.prototype.encodeHTML=(" + encodeHTMLSource.toString() + "());" + str;
+function resolveDefs(c, syn, block, def) {
+  return (typeof block === "string" ? block : block.toString())
+    .replace(syn.define, (_, code, assign, value) => {
+      if (code.indexOf("def.") === 0) {
+        code = code.substring(4)
+      }
+      if (!(code in def)) {
+        if (assign === ":") {
+          value.replace(syn.defineParams, (_, param, v) => {
+            def[code] = {arg: param, text: v}
+          })
+          if (!(code in def)) def[code] = value
+        } else {
+          new Function("def", `def['${code}']=${value}`)(def)
         }
-        try {
-            return new Function(c.varname, str);
-        } catch (e) {
-            if (typeof console !== 'undefined') console.log("Could not create a template function: " + str);
-            throw e;
+      }
+      return ""
+    })
+    .replace(syn.use, (_, code) => {
+      code = code.replace(syn.useParams, (_, s, d, param) => {
+        if (def[d] && def[d].arg && param) {
+          const rw = unescape((d + ":" + param).replace(/'|\\/g, "_"))
+          def.__exp = def.__exp || {}
+          def.__exp[rw] = def[d].text.replace(
+            new RegExp(`(^|[^\\w$])${def[d].arg}([^\\w$])`, "g"),
+            `$1${param}$2`
+          )
+          return s + `def.__exp['${rw}']`
         }
-    };
+      })
+      const v = new Function("def", "return " + code)(def)
+      return v ? resolveDefs(c, syn, v, def) : v
+    })
+}
 
-    doT.compile = function (tmpl, def) {
-        return doT.template(tmpl, null, def);
-    };
-}());
+function unescape(code) {
+  return code.replace(/\\('|\\)/g, "$1").replace(/[\r\t\n]/g, " ")
+}
+
+function template(tmpl, c, def) {
+  const ds = c && c.delimiters
+  const syn = ds && !sameDelimiters(ds) ? getSyntax(ds) : currentSyntax
+  c = c ? {...templateSettings, ...c} : templateSettings
+  let sid = 0
+  let str = resolveDefs(c, syn, tmpl, def || {})
+  const needEncoders = {}
+
+  str = (
+    "let out='" +
+    (c.strip
+      ? str
+          .trim()
+          .replace(/[\t ]+(\r|\n)/g, "\n") // remove trailing spaces
+          .replace(/(\r|\n)[\t ]+/g, " ") // leading spaces reduced to " "
+          .replace(/\r|\n|\t|\/\*[\s\S]*?\*\//g, "") // remove breaks, tabs and JS comments
+      : str
+    )
+      .replace(/'|\\/g, "\\$&")
+      .replace(syn.interpolate, (_, code) => `'+(${unescape(code)})+'`)
+      .replace(syn.typeInterpolate, (_, typ, code) => {
+        sid++
+        const val = c.internalPrefix + sid
+        const error = `throw new Error("expected ${TYPES[typ]}, got "+ (typeof ${val}))`
+        return `';const ${val}=(${unescape(code)});if(typeof ${val}!=="${
+          TYPES[typ]
+        }") ${error};out+=${val}+'`
+      })
+      .replace(syn.encode, (_, enc = "", code) => {
+        needEncoders[enc] = true
+        code = unescape(code)
+        const e = c.selfContained ? enc : enc ? "." + enc : '[""]'
+        return `'+${c.encodersPrefix}${e}(${code})+'`
+      })
+      .replace(syn.conditional, (_, elseCase, code) => {
+        if (code) {
+          code = unescape(code)
+          return elseCase ? `';}else if(${code}){out+='` : `';if(${code}){out+='`
+        }
+        return elseCase ? "';}else{out+='" : "';}out+='"
+      })
+      .replace(syn.iterate, (_, arr, vName, iName) => {
+        if (!arr) return "';} } out+='"
+        sid++
+        const defI = iName ? `let ${iName}=-1;` : ""
+        const incI = iName ? `${iName}++;` : ""
+        const val = c.internalPrefix + sid
+        return `';const ${val}=${unescape(
+          arr
+        )};if(${val}){${defI}for (const ${vName} of ${val}){${incI}out+='`
+      })
+      .replace(syn.evaluate, (_, code) => `';${unescape(code)}out+='`) +
+    "';return out;"
+  )
+    .replace(/\n/g, "\\n")
+    .replace(/\t/g, "\\t")
+    .replace(/\r/g, "\\r")
+    .replace(/(\s|;|\}|^|\{)out\+='';/g, "$1")
+    .replace(/\+''/g, "")
+
+  const args = Array.isArray(c.argName) ? properties(c.argName) : c.argName
+
+  if (Object.keys(needEncoders).length === 0) {
+    return try_(() => new Function(args, str))
+  }
+  checkEncoders(c, needEncoders)
+  str = `return function(${args}){${str}};`
+  return try_(() =>
+    c.selfContained
+      ? new Function((str = addEncoders(c, needEncoders) + str))()
+      : new Function(c.encodersPrefix, str)(c.encoders)
+  )
+
+  function try_(f) {
+    try {
+      return f()
+    } catch (e) {
+      console.log("Could not create a template function: " + str)
+      throw e
+    }
+  }
+}
+
+function compile(tmpl, def) {
+  return template(tmpl, null, def)
+}
+
+function sameDelimiters({start, end}) {
+  const d = templateSettings.delimiters
+  return d.start === start && d.end === end
+}
+
+function setDelimiters(delimiters) {
+  if (sameDelimiters(delimiters)) {
+    console.log("delimiters did not change")
+    return
+  }
+  currentSyntax = getSyntax(delimiters)
+  templateSettings.delimiters = delimiters
+}
+
+function getSyntax({start, end}) {
+  start = escape(start)
+  end = escape(end)
+  const syntax = {}
+  for (const syn in defaultSyntax) {
+    const s = defaultSyntax[syn]
+      .toString()
+      .replace(/\\\{\\\{/g, start)
+      .replace(/\\\}\\\}/g, end)
+    syntax[syn] = strToRegExp(s)
+  }
+  return syntax
+}
+
+const escapeCharacters = /([{}[\]()<>\\\/^$\-.+*?!=|&:])/g
+
+function escape(str) {
+  return str.replace(escapeCharacters, "\\$1")
+}
+
+const regexpPattern = /^\/(.*)\/([\w]*)$/
+
+function strToRegExp(str) {
+  const [, rx, flags] = str.match(regexpPattern)
+  return new RegExp(rx, flags)
+}
+
+function properties(args) {
+  return args.reduce((s, a, i) => s + (i ? "," : "") + a, "{") + "}"
+}
+
+function checkEncoders(c, encoders) {
+  const typ = encoderType[c.selfContained]
+  for (const enc in encoders) {
+    const e = c.encoders[enc]
+    if (!e) throw new Error(`unknown encoder "${enc}"`)
+    if (typeof e !== typ)
+      throw new Error(`selfContained ${c.selfContained}: encoder type must be "${typ}"`)
+  }
+}
+
+function addEncoders(c, encoders) {
+  let s = ""
+  for (const enc in encoders) s += `const ${c.encodersPrefix}${enc}=${c.encoders[enc]};`
+  return s
+}

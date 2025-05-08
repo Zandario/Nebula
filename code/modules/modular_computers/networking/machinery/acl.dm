@@ -4,7 +4,7 @@
 	icon = 'icons/obj/machines/tcomms/aas.dmi'
 	icon_state = "aas"
 	network_device_type =  /datum/extension/network_device/acl
-	main_template = "network_acl.tmpl"
+	main_template = "network_acl.jst"
 	construct_state = /decl/machine_construction/default/panel_closed
 	uncreated_component_parts = null
 	stat_immune = 0

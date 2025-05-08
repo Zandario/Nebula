@@ -48,7 +48,7 @@ var/global/list/all_warrants
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
-		ui = new(user, src, ui_key, "digitalwarrant.tmpl", name, 700, 450, state = state)
+		ui = new(user, src, ui_key, "digitalwarrant.jst", name, 700, 450, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()

@@ -197,7 +197,7 @@
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "smartfridge.tmpl", src.name, 400, 500)
+		ui = new(user, src, ui_key, "smartfridge.jst", src.name, 400, 500)
 		ui.set_initial_data(data)
 		ui.open()
 
@@ -244,4 +244,3 @@
 	src.visible_message("<span class='warning'>[src] launches [throw_item.name] at [target.name]!</span>")
 	update_icon()
 	return 1
-

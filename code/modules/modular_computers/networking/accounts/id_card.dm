@@ -58,7 +58,7 @@
 	data["password"] = password ? stars(password, 0) : "Enter Password"
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data)
 	if (!ui)
-		ui = new(user, src, ui_key, "network_id.tmpl", "Network ID Settings", 540, 326)
+		ui = new(user, src, ui_key, "network_id.jst", "Network ID Settings", 540, 326)
 		ui.set_initial_data(data)
 		ui.open()
 

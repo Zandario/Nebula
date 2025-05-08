@@ -307,7 +307,7 @@
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		var/atom/A = holder
-		ui = new(user, src, ui_key, "keypad_lock.tmpl", capitalize(A.name), 312, 400)
+		ui = new(user, src, ui_key, "keypad_lock.jst", capitalize(A.name), 312, 400)
 		ui.set_initial_data(data)
 		ui.open()
 
