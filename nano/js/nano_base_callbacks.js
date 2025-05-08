@@ -1,8 +1,33 @@
+/**
+ * NanoBaseCallbacksClass is a class that manages before and after update callbacks
+ * for the NanoStateManager, handling UI updates and interactions.
+ */
 class NanoBaseCallbacksClass {
 	constructor() {
+		/**
+		 * Used to disable clicks for a short period after each click (to avoid mis-clicks)
+		 * @type {boolean}
+		 */
 		this._canClick = true;
+
+		/**
+		 * An object that stores callbacks to be executed before an update.
+		 * @type {Object}
+		 */
 		this._baseBeforeUpdateCallbacks = {};
+
+		/**
+		 * An object that stores callbacks to be executed after an update.
+		 * @type {Object}
+		 */
 		this._baseAfterUpdateCallbacks = {
+			/**
+			 * This callback is triggered after new data is processed.
+			 * It updates the status/visibility icon and adds click event handling to buttons/links.
+			 * @param {Object} updateData - The data received from the update.
+			 *
+			 * @returns {Object} The same updateData object that was passed in.
+			 */
 			status: (updateData) => {
 				let uiStatusClass;
 				if (updateData['config']['status'] === 2) {
@@ -38,6 +63,13 @@ class NanoBaseCallbacksClass {
 
 				return updateData;
 			},
+			/**
+			 * This callback is triggered after new data is processed.
+			 * It updates map icons and adds event handling to the zoom link.
+			 * @param {Object} updateData - The data received from the update.
+			 *
+			 * @returns {Object} The same updateData object that was passed in.
+			 */
 			nanomap: (updateData) => {
 				const uiMapTooltip = document.getElementById('uiMapTooltip');
 				document.querySelectorAll('.mapIcon').forEach(el => {
@@ -73,11 +105,17 @@ class NanoBaseCallbacksClass {
 		};
 	}
 
+	/**
+	 * Adds the callbacks stored in _baseBeforeUpdateCallbacks and _baseAfterUpdateCallbacks to the StateManager.
+	 */
 	addCallbacks() {
 		NanoStateManager.addBeforeUpdateCallbacks(this._baseBeforeUpdateCallbacks);
 		NanoStateManager.addAfterUpdateCallbacks(this._baseAfterUpdateCallbacks);
 	}
 
+	/**
+	 * Removes the callbacks stored in _baseBeforeUpdateCallbacks and _baseAfterUpdateCallbacks from the StateManager.
+	 */
 	removeCallbacks() {
 		for (const callbackKey in this._baseBeforeUpdateCallbacks) {
 			if (this._baseBeforeUpdateCallbacks.hasOwnProperty(callbackKey)) {
@@ -92,4 +130,8 @@ class NanoBaseCallbacksClass {
 	}
 }
 
+/**
+ * The global instance of the NanoBaseCallbacksClass.
+ * @type {NanoBaseCallbacksClass}
+ */
 const NanoBaseCallbacks = new NanoBaseCallbacksClass();
