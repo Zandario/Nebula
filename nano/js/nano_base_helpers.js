@@ -3,56 +3,61 @@ NanoBaseHelpers = function () {
 	var _baseHelpers = {
 			// change ui styling to "syndicate mode"
 			syndicateMode: function() {
-				document.body.style.backgroundColor = '#330404';
-				document.body.style.backgroundImage = "url('uiBackground-Syndicate.png')";
-				document.body.style.backgroundPosition = '50% 0';
-				document.body.style.backgroundRepeat = 'repeat';
-				document.body.style.color = '#ff0000';
-				document.querySelectorAll('hr').forEach(el => el.style.backgroundColor = '#551414');
-				document.querySelectorAll('a').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('a:link').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('a:visited').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('a:active').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('linkOn').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('linkOff').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('input').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('a:hover').forEach(el => el.style.color = '#551414');
-				document.querySelectorAll('a.white').forEach(el => el.style.color = '#551414');
-				document.querySelectorAll('a.white:link').forEach(el => el.style.color = '#551414');
-				document.querySelectorAll('a.white:visited').forEach(el => el.style.color = '#551414');
-				document.querySelectorAll('a.white:active').forEach(el => el.style.color = '#551414');
-				document.querySelectorAll('a.white:hover').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('linkOn').forEach(el => el.style.background = '#771414');
-				document.querySelectorAll('a.linkOn:link').forEach(el => el.style.background = '#771414');
-				document.querySelectorAll('a.linkOn:visited').forEach(el => el.style.background = '#771414');
-				document.querySelectorAll('a.linkOn:active').forEach(el => el.style.background = '#771414');
-				document.querySelectorAll('a.linkOn:hover').forEach(el => el.style.background = '#771414');
-				document.querySelectorAll('statusDisplay').forEach(el => el.style.border = '1px solid #551414');
-				document.querySelectorAll('block').forEach(el => el.style.border = '1px solid #551414');
-				document.querySelectorAll('progressFill').forEach(el => el.style.background = '#551414');
-				document.querySelectorAll('itemLabelNarrow').forEach(el => el.style.color = '#ff0000');
-				document.querySelectorAll('itemLabel').forEach(el => el.style.color = '#ff0000');
-				document.querySelectorAll('itemLabelWide').forEach(el => el.style.color = '#ff0000');
-				document.querySelectorAll('itemLabelWider').forEach(el => el.style.color = '#ff0000');
-				document.querySelectorAll('itemLabelWidest').forEach(el => el.style.color = '#ff0000');
-				document.querySelectorAll('link').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('linkOn').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('linkOff').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('selected').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('disabled').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('yellowButton').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('redButton').forEach(el => el.style.border = '1px solid #ff0000');
-				document.querySelectorAll('link').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('linkOn').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('linkOff').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('selected').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('disabled').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('yellowButton').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('redButton').forEach(el => el.style.background = '#330000');
-				document.querySelectorAll('.average').forEach(el => el.style.color = '#ff0000');
-				document.getElementById('uiTitleFluff').style.backgroundImage = "url('uiTitleFluff-Syndicate.png')";
-				document.getElementById('uiTitleFluff').style.backgroundPosition = '50% 50%';
-				document.getElementById('uiTitleFluff').style.backgroundRepeat = 'no-repeat';
+				// HOLY FUCK THIS DUMB, REPLACE WITH AN ACTUAL STYLESHEET AT SOME POINT
+				const syndicateStyles = {
+					'body': {
+						backgroundColor: '#330404',
+						backgroundImage: "url('uiBackground-Syndicate.png')",
+						backgroundPosition: '50% 0',
+						backgroundRepeat: 'repeat',
+						color: '#ff0000'
+					},
+					'hr': { backgroundColor: '#551414' },
+					'a': { background: '#551414' },
+					'a:link': { background: '#551414' },
+					'a:visited': { background: '#551414' },
+					'a:active': { background: '#551414' },
+					'linkOn': { background: '#551414' },
+					'linkOff': { background: '#551414' },
+					'input': { background: '#551414' },
+					'a:hover': { color: '#551414' },
+					'a.white': { color: '#551414' },
+					'a.white:link': { color: '#551414' },
+					'a.white:visited': { color: '#551414' },
+					'a.white:active': { color: '#551414' },
+					'a.white:hover': { background: '#551414' },
+					'a.linkOn:link': { background: '#771414' },
+					'a.linkOn:visited': { background: '#771414' },
+					'a.linkOn:active': { background: '#771414' },
+					'a.linkOn:hover': { background: '#771414' },
+					'statusDisplay': { border: '1px solid #551414' },
+					'block': { border: '1px solid #551414' },
+					'progressFill': { background: '#551414' },
+					'itemLabelNarrow': { color: '#ff0000' },
+					'itemLabel': { color: '#ff0000' },
+					'itemLabelWide': { color: '#ff0000' },
+					'itemLabelWider': { color: '#ff0000' },
+					'itemLabelWidest': { color: '#ff0000' },
+					'link': { border: '1px solid #ff0000', background: '#330000' },
+					'linkOn': { border: '1px solid #ff0000', background: '#330000' },
+					'linkOff': { border: '1px solid #ff0000', background: '#330000' },
+					'selected': { border: '1px solid #ff0000', background: '#330000' },
+					'disabled': { border: '1px solid #ff0000', background: '#330000' },
+					'yellowButton': { border: '1px solid #ff0000', background: '#330000' },
+					'redButton': { border: '1px solid #ff0000', background: '#330000' },
+					'.average': { color: '#ff0000' },
+					'#uiTitleFluff': {
+						backgroundImage: "url('uiTitleFluff-Syndicate.png')",
+						backgroundPosition: '50% 50%',
+						backgroundRepeat: 'no-repeat'
+					}
+				};
+
+				Object.entries(syndicateStyles).forEach(([selector, styles]) => {
+					document.querySelectorAll(selector).forEach(el => {
+						Object.assign(el.style, styles);
+					});
+				});
 
 				return '';
 			},
