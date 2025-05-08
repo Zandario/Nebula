@@ -1,45 +1,29 @@
 // NanoUtility is the place to store utility functions
-var NanoUtility = function ()
-{
-    var _urlParameters = {}; // This is populated with the base url parameters (used by all links), which is probaby just the "src" parameter
+class NanoUtilityClass {
+	constructor() {
+		this._urlParameters = {}; // This is populated with the base url parameters (used by all links), which is probaby just the "src" parameter
+	}
 
-	return {
-        init: function ()
-		{
-			_urlParameters = JSON.parse(document.querySelector('#UrlParameters').textContent);
-        },
-		// generate a Byond href, combines _urlParameters with parameters
-		generateHref: function (parameters)
-		{
-			var queryString = '?';
+	init() {
+		this._urlParameters = JSON.parse(document.querySelector('#UrlParameters').textContent);
+	}
 
-			for (var key in _urlParameters)
-			{
-				if (_urlParameters.hasOwnProperty(key))
-				{
-					if (queryString !== '?')
-					{
-						queryString += ';';
-					}
-					queryString += key + '=' + _urlParameters[key];
-				}
-			}
+	// generate a Byond href, combines _urlParameters with parameters
+	generateHref(parameters) {
+		const url = new URL(window.location.href); // Use the current URL as the base
+		const urlParams = new URLSearchParams(this._urlParameters);
 
-			for (var key in parameters)
-			{
-				if (parameters.hasOwnProperty(key))
-				{
-					if (queryString !== '?')
-					{
-						queryString += ';';
-					}
-					queryString += key + '=' + parameters[key];
-				}
-			}
-			return queryString;
-		}
-    }
-} ();
+		Object.entries(parameters).forEach(([key, value]) => {
+			urlParams.set(key, value); // Add or update parameters
+		});
+
+		url.search = urlParams.toString().replace(/&/g, ';'); // Replace '&' with ';' if needed
+		return url.search;
+	}
+}
+
+const NanoUtility = new NanoUtilityClass();
+
 
 if (typeof jQuery == 'undefined') {
 	alert('ERROR: Javascript library failed to load!');
@@ -57,7 +41,7 @@ if (typeof doT == 'undefined') {
 })();
 
 // All scripts are initialised here, this allows control of init order
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
 	NanoUtility.init();
 	NanoStateManager.init();
 	NanoTemplate.init();

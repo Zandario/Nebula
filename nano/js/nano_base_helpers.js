@@ -1,66 +1,58 @@
 // NanoBaseHelpers is where the base template helpers (common to all templates) are stored
-NanoBaseHelpers = function ()
-{
+NanoBaseHelpers = function () {
 	var _baseHelpers = {
-            // change ui styling to "syndicate mode"
+			// change ui styling to "syndicate mode"
 			syndicateMode: function() {
-				$('body').css("background-color","#330404");
-				$('body').css("background-image","url('uiBackground-Syndicate.png')");
-				$('body').css("background-position","50% 0");
-				$('body').css("background-repeat","repeat");
-				$('body').css("color", "#ff0000");
-
-				$('hr').css("background-color", "#551414");
-				$('a').css("background", "#551414");
-				$('a:link').css("background", "#551414");
-				$('a:visited').css("background", "#551414");
-				$('a:active').css("background", "#551414");
-				$('linkOn').css("background", "#551414");
-				$('linkOff').css("background", "#551414");
-				$('input').css("background", "#551414");
-				$('a:hover').css("color", "#551414");
-				$('a.white').css("color", "#551414");
-				$('a.white:link').css("color", "#551414");
-				$('a.white:visited').css("color", "#551414");
-				$('a.white:active').css("color", "#551414");
-				$('a.white:hover').css("background", "#551414");
-				$('linkOn').css("background", "#771414");
-				$('a.linkOn:link').css("background", "#771414");
-				$('a.linkOn:visited').css("background", "#771414");
-				$('a.linkOn:active').css("background", "#771414");
-				$('a.linkOn:hover').css("background", "#771414");
-				$('statusDisplay').css("border", "1px solid #551414");
-				$('block').css("border", "1px solid #551414");
-				$('progressFill').css("background", "#551414");
-				$('statusDisplay').css("border", "1px solid #551414");
-
-				$('itemLabelNarrow').css("color", "#ff0000");
-				$('itemLabel').css("color", "#ff0000");
-				$('itemLabelWide').css("color", "#ff0000");
-				$('itemLabelWider').css("color", "#ff0000");
-				$('itemLabelWidest').css("color", "#ff0000");
-
-				$('link').css("border", "1px solid #ff0000");
-				$('linkOn').css("border", "1px solid #ff0000");
-				$('linkOff').css("border", "1px solid #ff0000");
-				$('selected').css("border", "1px solid #ff0000");
-				$('disabled').css("border", "1px solid #ff0000");
-				$('yellowButton').css("border", "1px solid #ff0000");
-				$('redButton').css("border", "1px solid #ff0000");
-
-				$('link').css("background", "#330000");
-				$('linkOn').css("background", "#330000");
-				$('linkOff').css("background", "#330000");
-				$('selected').css("background", "#330000");
-				$('disabled').css("background", "#330000");
-				$('yellowButton').css("background", "#330000");
-				$('redButton').css("background", "#330000");
-
-				$('.average').css("color", "#ff0000");
-
-				$('#uiTitleFluff').css("background-image","url('uiTitleFluff-Syndicate.png')");
-				$('#uiTitleFluff').css("background-position","50% 50%");
-				$('#uiTitleFluff').css("background-repeat", "no-repeat");
+				document.body.style.backgroundColor = '#330404';
+				document.body.style.backgroundImage = "url('uiBackground-Syndicate.png')";
+				document.body.style.backgroundPosition = '50% 0';
+				document.body.style.backgroundRepeat = 'repeat';
+				document.body.style.color = '#ff0000';
+				document.querySelectorAll('hr').forEach(el => el.style.backgroundColor = '#551414');
+				document.querySelectorAll('a').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('a:link').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('a:visited').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('a:active').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('linkOn').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('linkOff').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('input').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('a:hover').forEach(el => el.style.color = '#551414');
+				document.querySelectorAll('a.white').forEach(el => el.style.color = '#551414');
+				document.querySelectorAll('a.white:link').forEach(el => el.style.color = '#551414');
+				document.querySelectorAll('a.white:visited').forEach(el => el.style.color = '#551414');
+				document.querySelectorAll('a.white:active').forEach(el => el.style.color = '#551414');
+				document.querySelectorAll('a.white:hover').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('linkOn').forEach(el => el.style.background = '#771414');
+				document.querySelectorAll('a.linkOn:link').forEach(el => el.style.background = '#771414');
+				document.querySelectorAll('a.linkOn:visited').forEach(el => el.style.background = '#771414');
+				document.querySelectorAll('a.linkOn:active').forEach(el => el.style.background = '#771414');
+				document.querySelectorAll('a.linkOn:hover').forEach(el => el.style.background = '#771414');
+				document.querySelectorAll('statusDisplay').forEach(el => el.style.border = '1px solid #551414');
+				document.querySelectorAll('block').forEach(el => el.style.border = '1px solid #551414');
+				document.querySelectorAll('progressFill').forEach(el => el.style.background = '#551414');
+				document.querySelectorAll('itemLabelNarrow').forEach(el => el.style.color = '#ff0000');
+				document.querySelectorAll('itemLabel').forEach(el => el.style.color = '#ff0000');
+				document.querySelectorAll('itemLabelWide').forEach(el => el.style.color = '#ff0000');
+				document.querySelectorAll('itemLabelWider').forEach(el => el.style.color = '#ff0000');
+				document.querySelectorAll('itemLabelWidest').forEach(el => el.style.color = '#ff0000');
+				document.querySelectorAll('link').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('linkOn').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('linkOff').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('selected').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('disabled').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('yellowButton').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('redButton').forEach(el => el.style.border = '1px solid #ff0000');
+				document.querySelectorAll('link').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('linkOn').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('linkOff').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('selected').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('disabled').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('yellowButton').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('redButton').forEach(el => el.style.background = '#330000');
+				document.querySelectorAll('.average').forEach(el => el.style.color = '#ff0000');
+				document.getElementById('uiTitleFluff').style.backgroundImage = "url('uiTitleFluff-Syndicate.png')";
+				document.getElementById('uiTitleFluff').style.backgroundPosition = '50% 50%';
+				document.getElementById('uiTitleFluff').style.backgroundRepeat = 'no-repeat';
 
 				return '';
 			},
@@ -144,27 +136,27 @@ NanoBaseHelpers = function ()
 			displayBar: function (value, rangeMin, rangeMax, styleClass, showText, difClass, direction, id) {
 
 				if (rangeMin < rangeMax)
-                {
-                    if (value < rangeMin)
-                    {
-                        value = rangeMin;
-                    }
-                    else if (value > rangeMax)
-                    {
-                        value = rangeMax;
-                    }
-                }
-                else
-                {
-                    if (value > rangeMin)
-                    {
-                        value = rangeMin;
-                    }
-                    else if (value < rangeMax)
-                    {
-                        value = rangeMax;
-                    }
-                }
+				{
+					if (value < rangeMin)
+					{
+						value = rangeMin;
+					}
+					else if (value > rangeMax)
+					{
+						value = rangeMax;
+					}
+				}
+				else
+				{
+					if (value > rangeMin)
+					{
+						value = rangeMin;
+					}
+					else if (value < rangeMax)
+					{
+						value = rangeMax;
+					}
+				}
 
 				if (typeof styleClass == 'undefined' || !styleClass)
 				{
@@ -196,18 +188,18 @@ NanoBaseHelpers = function ()
 			},
 			// Display DNA Blocks (for the DNA Modifier UI)
 			displayDNABlocks: function(dnaString, selectedBlock, selectedSubblock, blockSize, paramKey) {
-			    if (!dnaString)
+				if (!dnaString)
 				{
 					return '<div class="notice">Please place a valid subject into the DNA modifier.</div>';
 				}
 
 				var characters = dnaString.split('');
 
-                var html = '<div class="dnaBlock"><div class="link dnaBlockNumber">1</div>';
-                var block = 1;
-                var subblock = 1;
-                for (index in characters)
-                {
+				var html = '<div class="dnaBlock"><div class="link dnaBlockNumber">1</div>';
+				var block = 1;
+				var subblock = 1;
+				for (index in characters)
+				{
 					if (!characters.hasOwnProperty(index) || typeof characters[index] === 'object')
 					{
 						continue;
@@ -223,28 +215,28 @@ NanoBaseHelpers = function ()
 						parameters = { 'selectSEBlock' : block, 'selectSESubblock' : subblock };
 					}
 
-                    var status = 'linkActive';
-                    if (block == selectedBlock && subblock == selectedSubblock)
-                    {
-                        status = 'selected';
-                    }
+					var status = 'linkActive';
+					if (block == selectedBlock && subblock == selectedSubblock)
+					{
+						status = 'selected';
+					}
 
-                    html += '<div class="link ' + status + ' dnaSubBlock" data-href="' + NanoUtility.generateHref(parameters) + '" id="dnaBlock' + index + '">' + characters[index] + '</div>'
+					html += '<div class="link ' + status + ' dnaSubBlock" data-href="' + NanoUtility.generateHref(parameters) + '" id="dnaBlock' + index + '">' + characters[index] + '</div>'
 
-                    index++;
-                    if (index % blockSize == 0 && index < characters.length)
-                    {
+					index++;
+					if (index % blockSize == 0 && index < characters.length)
+					{
 						block++;
-                        subblock = 1;
-                        html += '</div><div class="dnaBlock"><div class="link dnaBlockNumber">' + block + '</div>';
-                    }
-                    else
-                    {
-                        subblock++;
-                    }
-                }
+						subblock = 1;
+						html += '</div><div class="dnaBlock"><div class="link dnaBlockNumber">' + block + '</div>';
+					}
+					else
+					{
+						subblock++;
+					}
+				}
 
-                html += '</div>';
+				html += '</div>';
 
 				return html;
 			},
@@ -257,10 +249,10 @@ NanoBaseHelpers = function ()
 		};
 
 	return {
-        addHelpers: function ()
+		addHelpers: function ()
 		{
-            NanoTemplate.addHelpers(_baseHelpers);
-        },
+			NanoTemplate.addHelpers(_baseHelpers);
+		},
 		removeHelpers: function ()
 		{
 			for (var helperKey in _baseHelpers)
@@ -270,13 +262,6 @@ NanoBaseHelpers = function ()
 					NanoTemplate.removeHelper(helperKey);
 				}
 			}
-        }
+		}
 	};
 } ();
-
-
-
-
-
-
-

@@ -1,119 +1,95 @@
-// NanoBaseCallbacks is where the base callbacks (common to all templates) are stored
-NanoBaseCallbacks = function ()
-{
-	// _canClick is used to disable clicks for a short period after each click (to avoid mis-clicks)
-	var _canClick = true;
+class NanoBaseCallbacksClass {
+	constructor() {
+		this._canClick = true;
+		this._baseBeforeUpdateCallbacks = {};
+		this._baseAfterUpdateCallbacks = {
+			status: (updateData) => {
+				let uiStatusClass;
+				if (updateData['config']['status'] === 2) {
+					uiStatusClass = 'icon24 uiStatusGood';
+					document.querySelectorAll('.linkActive').forEach(el => el.classList.remove('inactive'));
+				} else if (updateData['config']['status'] === 1) {
+					uiStatusClass = 'icon24 uiStatusAverage';
+					document.querySelectorAll('.linkActive').forEach(el => el.classList.add('inactive'));
+				} else {
+					uiStatusClass = 'icon24 uiStatusBad';
+					document.querySelectorAll('.linkActive').forEach(el => el.classList.add('inactive'));
+				}
+				document.getElementById('uiStatusIcon').className = uiStatusClass;
 
-	var _baseBeforeUpdateCallbacks = {}
+				document.querySelectorAll('.linkActive').forEach(el => el.classList.remove('linkPending'));
 
-	var _baseAfterUpdateCallbacks = {
-		// this callback is triggered after new data is processed
-		// it updates the status/visibility icon and adds click event handling to buttons/links
-		status: function (updateData) {
-			var uiStatusClass;
-			if (updateData['config']['status'] == 2)
-			{
-				uiStatusClass = 'icon24 uiStatusGood';
-				$('.linkActive').removeClass('inactive');
-			}
-			else if (updateData['config']['status'] == 1)
-			{
-				uiStatusClass = 'icon24 uiStatusAverage';
-				$('.linkActive').addClass('inactive');
-			}
-			else
-			{
-				uiStatusClass = 'icon24 uiStatusBad'
-				$('.linkActive').addClass('inactive');
-			}
-			$('#uiStatusIcon').attr('class', uiStatusClass);
-
-			$('.linkActive').stopTime('linkPending');
-			$('.linkActive').removeClass('linkPending');
-
-			$('.linkActive')
-				.off('click')
-				.on('click', function (event) {
-					event.preventDefault();
-					var href = $(this).data('href');
-					if (href != null && _canClick)
-					{
-						_canClick = false;
-						$('body').oneTime(300, 'enableClick', function () {
-							_canClick = true;
-						});
-						if (updateData['config']['status'] == 2)
-						{
-							$(this).oneTime(300, 'linkPending', function () {
-								$(this).addClass('linkPending');
-							});
+				document.querySelectorAll('.linkActive').forEach(el => {
+					el.addEventListener('click', (event) => {
+						event.preventDefault();
+						const href = el.dataset.href;
+						if (href && this._canClick) {
+							this._canClick = false;
+							setTimeout(() => {
+								this._canClick = true;
+							}, 300);
+							if (updateData['config']['status'] === 2) {
+								setTimeout(() => el.classList.add('linkPending'), 300);
+							}
+							window.location.href = href;
 						}
-						window.location.href = href;
-					}
-				});
-
-			return updateData;
-		},
-		nanomap: function (updateData) {
-			$('.mapIcon')
-				.off('mouseenter mouseleave')
-				.on('mouseenter',
-					function (event) {
-						var self = this;
-						$('#uiMapTooltip')
-							.html($(this).children('.tooltip').html())
-							.show()
-							.stopTime()
-							.oneTime(5000, 'hideTooltip', function () {
-								$(this).fadeOut(500);
-							});
-					}
-				);
-
-			$('.zoomLink')
-				.off('click')
-				.on('click', function (event) {
-					event.preventDefault();
-					var zoomLevel = $(this).data('zoomLevel');
-					var uiMapObject = $('#uiMap');
-					var uiMapWidth = uiMapObject.width() * zoomLevel;
-					var uiMapHeight = uiMapObject.height() * zoomLevel;
-
-					uiMapObject.css({
-						zoom: zoomLevel,
-						left: '50%',
-						top: '50%',
-						marginLeft: '-' + Math.floor(uiMapWidth / 2) + 'px',
-						marginTop: '-' + Math.floor(uiMapHeight / 2) + 'px'
 					});
 				});
 
-			$('#uiMapImage').attr('src', updateData['config']['mapName'] + '-' + updateData['config']['mapZLevel'] + '.png');
+				return updateData;
+			},
+			nanomap: (updateData) => {
+				const uiMapTooltip = document.getElementById('uiMapTooltip');
+				document.querySelectorAll('.mapIcon').forEach(el => {
+					el.addEventListener('mouseenter', () => {
+						uiMapTooltip.innerHTML = el.querySelector('.tooltip').innerHTML;
+						uiMapTooltip.style.display = 'block';
+						setTimeout(() => {
+							uiMapTooltip.style.display = 'none';
+						}, 5000);
+					});
+				});
 
-			return updateData;
-		}
-	};
+				document.querySelectorAll('.zoomLink').forEach(el => {
+					el.addEventListener('click', (event) => {
+						event.preventDefault();
+						const zoomLevel = el.dataset.zoomLevel;
+						const uiMapObject = document.getElementById('uiMap');
+						const uiMapWidth = uiMapObject.offsetWidth * zoomLevel;
+						const uiMapHeight = uiMapObject.offsetHeight * zoomLevel;
 
-	return {
-		addCallbacks: function () {
-			NanoStateManager.addBeforeUpdateCallbacks(_baseBeforeUpdateCallbacks);
-			NanoStateManager.addAfterUpdateCallbacks(_baseAfterUpdateCallbacks);
-		},
-		removeCallbacks: function () {
-			for (var callbackKey in _baseBeforeUpdateCallbacks)
-			{
-				if (_baseBeforeUpdateCallbacks.hasOwnProperty(callbackKey))
-				{
-					NanoStateManager.removeBeforeUpdateCallback(callbackKey);
-				}
+						uiMapObject.style.zoom = zoomLevel;
+						uiMapObject.style.left = '50%';
+						uiMapObject.style.top = '50%';
+						uiMapObject.style.marginLeft = `-${Math.floor(uiMapWidth / 2)}px`;
+						uiMapObject.style.marginTop = `-${Math.floor(uiMapHeight / 2)}px`;
+					});
+				});
+
+				document.getElementById('uiMapImage').src = `${updateData.config.mapName}-${updateData.config.mapZLevel}.png`;
+
+				return updateData;
 			}
-			for (var callbackKey in _baseAfterUpdateCallbacks)
-			{
-				if (_baseAfterUpdateCallbacks.hasOwnProperty(callbackKey))
-				{
-					NanoStateManager.removeAfterUpdateCallback(callbackKey);
-				}
+		};
+	}
+
+	addCallbacks() {
+		NanoStateManager.addBeforeUpdateCallbacks(this._baseBeforeUpdateCallbacks);
+		NanoStateManager.addAfterUpdateCallbacks(this._baseAfterUpdateCallbacks);
+	}
+
+	removeCallbacks() {
+		for (const callbackKey in this._baseBeforeUpdateCallbacks) {
+			if (this._baseBeforeUpdateCallbacks.hasOwnProperty(callbackKey)) {
+				NanoStateManager.removeBeforeUpdateCallback(callbackKey);
 			}
 		}
-	};
-} ();
+		for (const callbackKey in this._baseAfterUpdateCallbacks) {
+			if (this._baseAfterUpdateCallbacks.hasOwnProperty(callbackKey)) {
+				NanoStateManager.removeAfterUpdateCallback(callbackKey);
+			}
+		}
+	}
+}
+
+const NanoBaseCallbacks = new NanoBaseCallbacksClass();
