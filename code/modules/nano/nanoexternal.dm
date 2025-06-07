@@ -63,7 +63,7 @@
   *
   * @return data /list Data to be sent to the UI
  **/
-/datum/proc/ui_data(mob/user, ui_key = "main")
+/datum/proc/ui_data(mob/user, ui_key = "main") as /list
 	return list() // Not implemented.
 
 

@@ -113,7 +113,7 @@ nanoui is used to open and update nano browser uis
  * @return nothing
  */
 /datum/nanoui/proc/add_common_assets()
-	add_script("libraries.min.js") // A JS file comprising of jQuery, doT.js and jQuery Timer libraries (compressed together)
+	add_script("doT.js") // The doT.js templating engine, this is used to render templates.
 	add_script("nano_utility.js") // The NanoUtility JS, this is used to store utility functions.
 	add_script("nano_template.js") // The NanoTemplate JS, this is used to render templates.
 	add_script("nano_state_manager.js") // The NanoStateManager JS, it handles updates from the server and passes data to the current state
@@ -165,6 +165,7 @@ nanoui is used to open and update nano browser uis
 		close()
 		return 1
 	set_nano_status(new_status, push_update)
+	return FALSE
 
 /**
  * Set the ui to auto update (every master_controller tick)
@@ -417,7 +418,7 @@ nanoui is used to open and update nano browser uis
 		</noscript>
 	</body>
 </html>
-	"}
+"}
 
 /**
  * Open this UI

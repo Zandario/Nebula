@@ -147,9 +147,24 @@
 
 	return 0
 
-/datum/nano_module/law_manager/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = global.default_topic_state)
-	var/data[0]
+/datum/nano_module/law_manager/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = TRUE, datum/topic_state/state = global.default_topic_state)
 	owner.lawsync()
+
+	var/list/data = ui_data(user, ui_key)
+
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	if (!ui)
+		ui = new(user, src, ui_key, "law_manager.jst", sanitize("[src] - [owner]"), 800, is_jailbroken(user) ? 600 : 400, state = state)
+		ui.set_initial_data(data)
+		ui.open()
+		ui.set_auto_update(1)
+
+/datum/nano_module/law_manager/ui_data(mob/user, ui_key)
+	. = ..()
+	if(!owner || !owner.laws)
+		return list()
+
+	var/list/data = .
 
 	data["ion_law_nr"] = ionnum()
 	data["ion_law"] = ion_law
@@ -169,31 +184,27 @@
 	data["isAdmin"] = is_admin(user)
 	data["view"] = current_view
 
-	var/channels[0]
+	var/list/channels = list()
 	for (var/ch_name in owner.law_channels())
 		channels[++channels.len] = list("channel" = ch_name)
 	data["channel"] = owner.lawchannel
 	data["channels"] = channels
 	data["law_sets"] = package_multiple_laws(data["isAdmin"] ? admin_laws : player_laws)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		ui = new(user, src, ui_key, "law_manager.jst", sanitize("[src] - [owner]"), 800, is_jailbroken(user) ? 600 : 400, state = state)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
+	return data
 
-/datum/nano_module/law_manager/proc/package_laws(var/list/data, var/field, var/list/datum/ai_law/laws)
-	var/packaged_laws[0]
+
+/datum/nano_module/law_manager/proc/package_laws(list/data, field, list/datum/ai_law/laws)
+	var/list/packaged_laws = list()
 	for(var/datum/ai_law/AL in laws)
 		packaged_laws[++packaged_laws.len] = list("law" = AL.law, "index" = AL.get_index(), "state" = owner.laws.get_state_law(AL), "ref" = "\ref[AL]")
 	data[field] = packaged_laws
 	data["has_[field]"] = packaged_laws.len
 
-/datum/nano_module/law_manager/proc/package_multiple_laws(var/list/datum/ai_laws/laws)
-	var/law_sets[0]
+/datum/nano_module/law_manager/proc/package_multiple_laws(list/datum/ai_laws/laws)
+	var/list/law_sets = list()
 	for(var/datum/ai_laws/ALs in laws)
-		var/packaged_laws[0]
+		var/list/packaged_laws = list()
 		package_laws(packaged_laws, "zeroth_laws", list(ALs.zeroth_law, ALs.zeroth_law_borg))
 		package_laws(packaged_laws, "ion_laws", ALs.ion_laws)
 		package_laws(packaged_laws, "inherent_laws", ALs.inherent_laws)
@@ -202,16 +213,16 @@
 
 	return law_sets
 
-/datum/nano_module/law_manager/proc/is_jailbroken(var/mob/user)
+/datum/nano_module/law_manager/proc/is_jailbroken(mob/user)
 	return (is_admin(user) && !owner.is_slaved()) || owner.is_malfunctioning()
 
 /mob/living/silicon/proc/is_slaved()
-	return 0
+	return FALSE
 
 /mob/living/silicon/robot/is_slaved()
 	return lawupdate && connected_ai ? sanitize(connected_ai.name) : null
 
-/datum/nano_module/law_manager/proc/sync_laws(var/mob/living/silicon/ai/AI)
+/datum/nano_module/law_manager/proc/sync_laws(mob/living/silicon/ai/AI)
 	if(!AI)
 		return
 	for(var/mob/living/silicon/robot/robot in AI.connected_robots)
